@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login & Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-light: #f0f0f0;
+      --bg-dark: #1e1e1e;
+      --card-light: #ffffff;
+      --card-dark: #2b2b2b;
+      --text-light: #000000;
+      --text-dark: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .container {
+      background: var(--card-light);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      transition: background 0.3s;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .toggle-btn {
+      background: transparent;
+      color: #007bff;
+      border: none;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    .dark body {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .dark .container {
+      background: var(--card-dark);
+    }
+
+    .dark input, .dark button {
+      background: #444;
+      color: white;
+      border-color: #777;
+    }
+
+    .dark button:hover {
+      background-color: #222;
+    }
+
+    .dark .toggle-btn {
+      color: #66b2ff;
+    }
+
+    #modeSwitch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
+
+    #response {
+      color: red;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 500px) {
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="modeSwitch">Toggle Dark Mode</button>
+  <div class="container">
+    <h2 id="formTitle">Login</h2>
+    <form id="authForm">
+      <input type="text" name="name" id="nameField" placeholder="Name" style="display:none" />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit" id="submitBtn">Login</button>
+    </form>
+    <p id="response"></p>
+    <button class="toggle-btn" id="toggleFormBtn">Don't have an account? Register</button>
+  </div>
+
+  <script>
+    let isLogin = true;
+    const formTitle = document.getElementById("formTitle");
+    const toggleBtn = document.getElementById("toggleFormBtn");
+    const nameField = document.getElementById("nameField");
+    const submitBtn = document.getElementById("submitBtn");
+    const responseText = document.getElementById("response");
+
+    document.getElementById("authForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = {
+        email: e.target.email.value,
+        password: e.target.password.value,
+      };
+
+      if (!isLogin) {
+        formData.name = e.target.name.value;
+      }
+
+      const endpoint = isLogin ? "login" : "register";
+
+      const response = await fetch(`http://localhost:3000/${endpoint}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        if (isLogin) {
+          window.location.href = "registration.html";
+        } else {
+          responseText.style.color = "green";
+          responseText.innerText = "Registration successful! You can now login.";
+          toggleForm(); // switch to login mode
+        }
+      } else {
+        const result = await response.json();
+        responseText.innerText = result.message || "Something went wrong!";
+      }
+    });
+
+    function toggleForm() {
+      isLogin = !isLogin;
+      formTitle.innerText = isLogin ? "Login" : "Register";
+      submitBtn.innerText = isLogin ? "Login" : "Register";
+      toggleBtn.innerText = isLogin ? "Don't have an account? Register" : "Already have an account? Login";
+      nameField.style.display = isLogin ? "none" : "block";
+      responseText.innerText = "";
+    }
+
+    toggleBtn.addEventListener("click", toggleForm);
+
+    // Dark mode toggle
+    const modeBtn = document.getElementById("modeSwitch");
+    modeBtn.addEventListener("click", () => {
+      document.documentElement.classList.toggle("dark");
+    });
+  </script>
+</body>
+</html>

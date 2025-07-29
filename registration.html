@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Success</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --bg-light: linear-gradient(to right, #00c6ff, #0072ff);
+      --bg-dark: #121212;
+      --card-bg-light: #ffffff;
+      --card-bg-dark: #1e1e1e;
+      --text-light: #000000;
+      --text-dark: #ffffff;
+      --accent: #0072ff;
+      --accent-hover: #005dc1;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    body.dark {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .success-card {
+      background: var(--card-bg-light);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      animation: fadeIn 0.8s ease;
+      transition: background 0.5s, color 0.5s;
+      position: relative;
+    }
+
+    body.dark .success-card {
+      background: var(--card-bg-dark);
+    }
+
+    h2 {
+      color: #28a745;
+      margin-bottom: 15px;
+      animation: popIn 0.6s ease-out;
+    }
+
+    p {
+      font-size: 1.1rem;
+      animation: fadeIn 1s ease-in;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px 25px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: var(--accent-hover);
+    }
+
+    .toggle-mode {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: 1px solid #ccc;
+      border-radius: 20px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: inherit;
+      transition: all 0.3s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @media (max-width: 480px) {
+      .success-card {
+        padding: 30px 20px;
+        width: 90%;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="success-card">
+    <button class="toggle-mode" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+    <h2>Login Successful!</h2>
+    <p>Welcome to the dashboard. You’ve logged in successfully.</p>
+    <button onclick="goToLogin()">Log out</button>
+  </div>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark');
+      const button = document.querySelector('.toggle-mode');
+      button.textContent = document.body.classList.contains('dark') ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+
+    function goToLogin() {
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>
+
