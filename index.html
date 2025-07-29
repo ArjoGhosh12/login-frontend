@@ -149,11 +149,12 @@
 
       const endpoint = isLogin ? "login" : "register";
 
-      const response = await fetch(https://backend1-eybx.onrender.com/${endpoint}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(`https://backend1-eybx.onrender.com/${endpoint}`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(formData),
+});
+
 
       if (response.ok) {
         if (isLogin) {
